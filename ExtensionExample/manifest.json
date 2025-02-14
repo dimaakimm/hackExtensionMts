@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "MTS Link Audio Capture",
+  "version": "1.0",
+  "default_locale": "en",
+  "permissions": [
+    "tabCapture",
+    "activeTab"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
