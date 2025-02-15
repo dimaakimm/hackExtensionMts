@@ -63,6 +63,7 @@
 
     // Текстовое поле (отображение данных)
     const textDisplay = document.createElement("div");
+    textDisplay.id = "textDisplay";
     textDisplay.innerText = "Ожидание данных...";
     textDisplay.style.padding = "10px";
     textDisplay.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
@@ -256,7 +257,7 @@
 
         wsListener.onmessage = async (event) => {
             console.log("Получены данные от сервера:", event.data);
-            textDisplay.innerText = "Получено сообщение: " + event.data;
+            animateTextDisplay(event.data);
         };
 
         wsListener.onerror = (error) => {
@@ -266,6 +267,30 @@
         wsListener.onclose = () => {
             console.warn("WebSocket Listener отключен");
         };
+    }
+
+    function animateTextDisplay(text) {
+        const textDisplay = document.getElementById("textDisplay");
+        console.log(textDisplay);
+        if (!textDisplay) {
+            console.error("❌ Ошибка: элемент #textDisplay не найден!");
+            return;
+        }
+        textDisplay.innerHTML = ""; // Очищаем текст перед анимацией
+
+        const words = text.split(" ");
+        words.forEach((word, index) => {
+            let span = document.createElement("span");
+            span.textContent = word + " "; // Добавляем пробел после каждого слова
+            span.style.opacity = "0"; // Скрываем слово
+            span.style.transition = "opacity 0.5s ease-in-out";
+            textDisplay.appendChild(span);
+
+            // Показываем слово с задержкой
+            setTimeout(() => {
+                span.style.opacity = "1";
+            }, index * 300); // Задержка между словами 300 мс
+        });
     }
 
 // **Функция для остановки WebSocket Listener**
