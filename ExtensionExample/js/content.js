@@ -54,7 +54,7 @@
     });
     listenerContainer.appendChild(textDisplay);
 
-    const summaryDisplay = createElement("div", { id: "summaryDisplay", innerText: "Ожидание данных... Ну вот так примерно будет выглядеть нормальный текст. Честно, не знаю, стоит ли его делать больше", tabindex: "0", "aria-label": "Ожидание данных..." }, {
+    const summaryDisplay = createElement("div", { id: "summaryDisplay", innerText: "Ожидание данных...", tabindex: "0", "aria-label": "Ожидание данных..." }, {
         padding: "10px",
         backgroundColor: "rgba(255, 255, 255, 0.1)", // Прозрачный фон
         borderRadius: "8px",
@@ -66,8 +66,8 @@
     });
     listenerContainer.appendChild(summaryDisplay);
 
-    // Кнопка "Добавить субтитры"
-    const subtitleButton = createElement("button", { innerText: "Добавить субтитры", tabindex: "0", "aria-label": "Добавить субтитры" }, {
+    // Кнопка "Озвучивание текста"
+    const subtitleButton = createElement("button", { innerText: "Озвучивание текста", tabindex: "0", "aria-label": "Озвучивание текста" }, {
         width: "100%",
         padding: "10px",
         backgroundColor: "#4CAF50",
