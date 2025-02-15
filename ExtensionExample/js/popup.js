@@ -1,4 +1,5 @@
-﻿document.getElementById('captureButton').addEventListener('click', () => {
+﻿/*
+document.getElementById('captureButton').addEventListener('click', () => {
     chrome.tabCapture.capture({ audio: true, video: false }, function(stream) {
         if (chrome.runtime.lastError || !stream) {
             console.error('Ошибка захвата аудио:', chrome.runtime.lastError);
@@ -57,3 +58,4 @@
         }, 10000);
     });
 });
+*/
