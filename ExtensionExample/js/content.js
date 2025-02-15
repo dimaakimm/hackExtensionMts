@@ -145,27 +145,7 @@
     let ws = null; // Глобальная переменная для WebSocket
     let recordInterval = null; // Переменная для хранения setInterval
 
-    function startRecording() {
-/*        if (ws) {
-            ws.close(); // Закрываем старый WebSocket перед созданием нового
-        }*/
 
-        ws = new WebSocket("ws://localhost:8000/ws/session1/speaker");
-
-        ws.onopen = () => {
-            console.log("WebSocket соединение установлено");
-            recordAudio(); // Начинаем запись сразу после открытия WebSocket
-        };
-
-        ws.onclose = () => {
-            console.log("WebSocket соединение закрыто");
-            stopRecording(); // Останавливаем запись, если соединение закрывается
-        };
-
-        ws.onerror = (error) => {
-            console.log("Ошибка WebSocket:", error);
-        };
-    }
 
     async function getMicrophoneAccess() {
         try {
@@ -211,28 +191,95 @@
         }, 5000);
     }
 
+    function startRecording() {
+        if (ws && ws.readyState !== WebSocket.CLOSED) {
+            console.log("WebSocket уже открыт, закрываем перед созданием нового...");
+            ws.close();
+        }
+
+        ws = new WebSocket("ws://localhost:8000/ws/session1/speaker");
+
+        ws.onopen = () => {
+            console.log("WebSocket соединение установлено");
+            recordAudio(); // Начинаем запись
+        };
+
+        ws.onerror = (error) => {
+            console.error("Ошибка WebSocket:", error);
+        };
+
+        ws.onclose = (event) => {
+            console.warn("WebSocket закрыт. Код:", event.code, "Причина:", event.reason);
+            // Добавляем задержку перед остановкой записи, если соединение не установлено
+            setTimeout(() => {
+                if (ws.readyState === WebSocket.CLOSED) {
+                    stopRecording();
+                }
+            }, 500);
+        };
+    }
+
     function stopRecording() {
         if (recordInterval) {
             clearInterval(recordInterval);
             recordInterval = null;
             console.log("Запись остановлена.");
         }
-        if (ws) {
+        if (ws && ws.readyState === WebSocket.OPEN) {
+            console.log("Закрываем WebSocket Speaker...");
             ws.close();
             ws = null;
         }
     }
 
+
 // **Функция переключения режима**
     function updateUI() {
         if (modeSelect.value === "listener") {
-            listenerContainer.style.display = "block"; // Показываем интерфейс Listener
-            stopRecording(); // Останавливаем запись, если была активна
+            listenerContainer.style.display = "block";
+            startListening();
         } else {
-            listenerContainer.style.display = "none"; // Скрываем всё, кроме селектора
+            listenerContainer.style.display = "none";
+            stopListening();
         }
     }
 
+
+
+    function startListening() {
+        if (ws) {
+            console.log("Закрытие предыдущего WebSocket соединения...");
+            ws.close(); // Закрываем старый WebSocket перед созданием нового
+        }
+
+        ws = new WebSocket("ws://localhost:8000/ws/session1/listener");
+
+        ws.onopen = () => {
+            console.log("WebSocket Listener подключен");
+        };
+
+        ws.onmessage = async (event) => {
+            console.log("Получены данные от сервера:", event.data);
+            textDisplay.innerText = "Получено сообщение: " + event.data;
+        };
+
+        ws.onerror = (error) => {
+            console.error("Ошибка WebSocket Listener:", error);
+        };
+
+        ws.onclose = () => {
+            console.warn("WebSocket Listener отключен");
+        };
+    }
+
+// **Функция для остановки WebSocket Listener**
+    function stopListening() {
+        if (ws) {
+            console.log("Закрываем WebSocket Listener...");
+            ws.close();
+            ws = null;
+        }
+    }
 // **Обновляем UI при смене режима**
     modeSelect.addEventListener("change", () => {
         updateUI();
