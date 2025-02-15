@@ -1,153 +1,161 @@
 (function () {
     console.log("MTS-Link Helper запущен!");
 
-    // Создание основного контейнера
-    const container = document.createElement("div");
-    container.id = "mts-link-helper";
-    container.style.position = "fixed";
-    container.style.bottom = "90px";
-    container.style.left = "20px";
-    container.style.width = "320px";
-    container.style.backgroundColor = "rgba(0, 0, 0, 0.9)";
-    container.style.color = "white";
-    container.style.padding = "15px";
-    container.style.borderRadius = "8px";
-    container.style.fontSize = "16px";
-    container.style.zIndex = "9999";
-    container.style.boxShadow = "0 0 10px rgba(255, 255, 255, 0.3)";
-    container.style.textAlign = "center";
-    container.setAttribute("tabindex", "0"); // Доступность через Tab
-
-    // Поле выбора режима (speaker/listener)
-    const modeSelectContainer = document.createElement("div");
-    modeSelectContainer.style.marginBottom = "10px";
-
-    const modeLabel = document.createElement("label");
-    modeLabel.innerText = "Выберите режим:";
-    modeLabel.style.display = "block";
-    modeLabel.style.marginBottom = "5px";
-    modeSelectContainer.appendChild(modeLabel);
-
-    const modeSelect = document.createElement("select");
-    modeSelect.style.width = "100%";
-    modeSelect.style.padding = "8px";
-    modeSelect.style.border = "none";
-    modeSelect.style.borderRadius = "5px";
-    modeSelect.style.fontSize = "14px";
-    modeSelect.style.cursor = "pointer";
-    modeSelect.style.color = "black";
-    modeSelect.setAttribute("tabindex", "0");
-
-    const modes = { "none": "Выберите режим", "speaker": "Speaker", "listener": "Listener" };
-    for (const [value, text] of Object.entries(modes)) {
-        const option = document.createElement("option");
-        option.value = value;
-        option.textContent = text;
-        modeSelect.appendChild(option);
+    // Функция для создания элемента с заданными стилями
+    function createElement(tag, attributes = {}, styles = {}) {
+        const element = document.createElement(tag);
+        Object.assign(element, attributes);
+        Object.assign(element.style, styles);
+        return element;
     }
-    modeSelectContainer.appendChild(modeSelect);
-    container.appendChild(modeSelectContainer);
 
-    // **Контейнер для элементов Listener (скрывается при выборе Speaker)**
-    const listenerContainer = document.createElement("div");
-    listenerContainer.style.display = "none"; // Скрыт по умолчанию
-
-    // Заголовок
-    const title = document.createElement("div");
-    title.innerText = "MTS-Link Helper";
-    title.style.fontSize = "18px";
-    title.style.marginBottom = "10px";
-    title.style.fontWeight = "bold";
-    title.setAttribute("aria-label", "MTS-Link Helper");
-    listenerContainer.appendChild(title);
-
-    // Текстовое поле (отображение данных)
-    const textDisplay = document.createElement("div");
-    textDisplay.id = "textDisplay";
-    textDisplay.innerText = "Ожидание данных...";
-    textDisplay.style.padding = "10px";
-    textDisplay.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
-    textDisplay.style.borderRadius = "5px";
-    textDisplay.style.marginBottom = "10px";
-    textDisplay.style.fontSize = "14px";
-    textDisplay.setAttribute("tabindex", "0");
-    textDisplay.setAttribute("aria-label", textDisplay.innerText);
-    listenerContainer.appendChild(textDisplay);
-
-// Кнопка "Добавить субтитры"
-    const subtitleButton = document.createElement("button");
-    subtitleButton.innerText = "Добавить субтитры";
-    subtitleButton.style.width = "100%";
-    subtitleButton.style.padding = "8px";
-    subtitleButton.style.backgroundColor = "#4CAF50";
-    subtitleButton.style.color = "white";
-    subtitleButton.style.border = "none";
-    subtitleButton.style.borderRadius = "5px";
-    subtitleButton.style.cursor = "pointer";
-    subtitleButton.style.marginBottom = "10px";
-    subtitleButton.style.fontSize = "14px";
-    subtitleButton.setAttribute("tabindex", "0");
-    subtitleButton.setAttribute("aria-label", "Добавить субтитры");
-
-    let isGray = false; // Флаг состояния кнопки
-
-    subtitleButton.addEventListener("click", () => {
-        isGray = !isGray; // Переключение состояния
-        subtitleButton.style.backgroundColor = isGray ? "gray" : "#4CAF50";
+    // Основной контейнер
+    const container = createElement("div", { id: "mts-link-helper", tabindex: "0" }, {
+        position: "fixed",
+        bottom: "90px",
+        left: "20px",
+        width: "400px",
+        backgroundColor: "#333", // Темный фон
+        color: "white",
+        padding: "15px",
+        borderRadius: "10px", // Слегка закругленные углы
+        fontSize: "16px",
+        zIndex: "9999",
+        boxShadow: "0 0 15px rgba(255, 255, 255, 0.4)",
+        textAlign: "center",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        border: "2px solid #4CAF50", // Зеленая граница для акцента
     });
 
-    listenerContainer.appendChild(subtitleButton);
+    // Контейнер для элементов Listener (скрывается при выборе Speaker)
+    const listenerContainer = createElement("div", {}, { display: "none", width: "100%" });
 
+    // Заголовок
+    const title = createElement("div", { innerText: "MTS-Link Helper", "aria-label": "MTS-Link Helper" }, {
+        fontSize: "18px",
+        marginBottom: "10px",
+        fontWeight: "bold",
+        color: "#4CAF50", // Зеленый цвет для заголовка
+    });
+    listenerContainer.appendChild(title);
+
+    // Текстовое поле для отображения данных
+    const textDisplay = createElement("div", { id: "textDisplay", innerText: "Ожидание данных...", tabindex: "0", "aria-label": "Ожидание данных..." }, {
+        padding: "10px",
+        backgroundColor: "rgba(255, 255, 255, 0.1)", // Прозрачный фон
+        borderRadius: "8px",
+        marginBottom: "10px",
+        fontSize: "16px",
+        color: "white",
+        border: "1px solid #4CAF50", // Зеленая граница
+        minHeight: "38px"
+    });
+    listenerContainer.appendChild(textDisplay);
+
+    const summaryDisplay = createElement("div", { id: "summaryDisplay", innerText: "Ожидание данных... Ну вот так примерно будет выглядеть нормальный текст. Честно, не знаю, стоит ли его делать больше", tabindex: "0", "aria-label": "Ожидание данных..." }, {
+        padding: "10px",
+        backgroundColor: "rgba(255, 255, 255, 0.1)", // Прозрачный фон
+        borderRadius: "8px",
+        marginBottom: "15px",
+        fontSize: "16px",
+        color: "white",
+        border: "1px solid #4CAF50", // Зеленая граница
+        minHeight: "38px"
+    });
+    listenerContainer.appendChild(summaryDisplay);
 
     // Кнопка "Добавить субтитры"
-    const screenshotButton = document.createElement("button");
-    screenshotButton.innerText = "Сделать скриншот";
-    screenshotButton.style.width = "100%";
-    screenshotButton.style.padding = "8px";
-    screenshotButton.style.backgroundColor = "#4CAF50";
-    screenshotButton.style.color = "white";
-    screenshotButton.style.border = "none";
-    screenshotButton.style.borderRadius = "5px";
-    screenshotButton.style.cursor = "pointer";
-    screenshotButton.style.marginBottom = "10px";
-    screenshotButton.style.fontSize = "14px";
-    screenshotButton.setAttribute("tabindex", "0");
-    screenshotButton.setAttribute("aria-label", "Сделать скриншот");
+    const subtitleButton = createElement("button", { innerText: "Добавить субтитры", tabindex: "0", "aria-label": "Добавить субтитры" }, {
+        width: "100%",
+        padding: "10px",
+        backgroundColor: "#4CAF50",
+        color: "white",
+        border: "none",
+        borderRadius: "5px",
+        cursor: "pointer",
+        marginBottom: "10px",
+        fontSize: "14px",
+        fontWeight: "bold",
+        textTransform: "uppercase", // Увеличение контраста текста
+    });
 
+    let isGray = false; // Флаг состояния кнопки
+    subtitleButton.addEventListener("click", () => {
+        isGray = !isGray;
+        subtitleButton.style.backgroundColor = isGray ? "gray" : "#4CAF50";
+    });
+    listenerContainer.appendChild(subtitleButton);
+
+    // Кнопка "Сделать скриншот"
+    const screenshotButton = createElement("button", { innerText: "Сделать скриншот", tabindex: "0", "aria-label": "Сделать скриншот" }, {
+        width: "100%",
+        padding: "10px",
+        backgroundColor: "#FF5722", // Оранжевая кнопка
+        color: "white",
+        border: "none",
+        borderRadius: "5px",
+        cursor: "pointer",
+        marginBottom: "10px",
+        fontSize: "14px",
+        fontWeight: "bold",
+    });
     listenerContainer.appendChild(screenshotButton);
 
     // Выпадающий список языков
-    const languageSelect = document.createElement("select");
-    languageSelect.style.width = "100%";
-    languageSelect.style.padding = "8px";
-    languageSelect.style.border = "none";
-    languageSelect.style.borderRadius = "5px";
-    languageSelect.style.fontSize = "14px";
-    languageSelect.style.cursor = "pointer";
-    languageSelect.style.color = "black";
-    languageSelect.setAttribute("tabindex", "0");
-    languageSelect.setAttribute("aria-label", "Выберите язык субтитров");
-
+    const languageSelect = createElement("select", { tabindex: "0", "aria-label": "Выберите язык субтитров" }, {
+        width: "100%",
+        padding: "10px",
+        border: "none",
+        borderRadius: "5px",
+        fontSize: "14px",
+        cursor: "pointer",
+        color: "black",
+        backgroundColor: "#fff",
+        marginBottom: "10px",
+    });
     const languages = { ru: "Русский", en: "Английский", zh: "Китайский" };
-    for (const [code, name] of Object.entries(languages)) {
-        const option = document.createElement("option");
-        option.value = code;
-        option.textContent = name;
+    Object.entries(languages).forEach(([code, name]) => {
+        const option = createElement("option", { value: code, innerText: name });
         languageSelect.appendChild(option);
-    }
-
+    });
     listenerContainer.appendChild(languageSelect);
-    container.appendChild(listenerContainer);
 
     // Добавление контейнера в body
     document.body.appendChild(container);
+    container.appendChild(listenerContainer);
 
-    // **Функция переключения видимости**
+    // Функция переключения видимости
     function updateUI() {
+        listenerContainer.style.display = modeSelect.value === "listener" ? "block" : "none";
+    }
+
+    // Выпадающий список для режима
+    const modeSelectContainer = createElement("div", {}, { width: "100%" });
+    const modeLabel = createElement("label", { innerText: "Выберите режим:" }, { display: "block", marginBottom: "5px" });
+    const modeSelect = createElement("select", { tabindex: "0" }, {
+        width: "100%", padding: "10px", border: "none", borderRadius: "5px", fontSize: "14px", cursor: "pointer", color: "black", backgroundColor: "#fff", marginTop: "5px"
+    });
+
+    const modes = { "none": "Выберите режим", "speaker": "Speaker", "listener": "Listener" };
+    Object.entries(modes).forEach(([value, text]) => {
+        const option = createElement("option", { value, innerText: text });
+        modeSelect.appendChild(option);
+    });
+
+    modeSelectContainer.append(modeLabel, modeSelect);
+    container.appendChild(modeSelectContainer);
+
+
+    function updateUI() {
+        listenerContainer.style.display = modeSelect.value === "listener" ? "block" : "none";
         if (modeSelect.value === "listener") {
-            listenerContainer.style.display = "block"; // Показываем элементы listener
+            listenerContainer.style.display = "block";
+            startListening();
         } else {
-            listenerContainer.style.display = "none"; // Скрываем все, кроме селектора
+            listenerContainer.style.display = "none";
+            stopListening();
         }
     }
 
@@ -155,50 +163,45 @@
         updateUI();
         if (modeSelect.value === "speaker") {
             startRecording();
-        } else if (ws) {
-            ws.close();
-            console.log("WebSocket соединение закрыто");
+        } else {
+            stopRecording();
         }
     });
 
-    let wsSpeaker = null; // WebSocket для speaker
-    let wsListener = null; // WebSocket для listener
-    let recordInterval = null; // Интервал записи
+    let wsSpeaker = null;
+    let wsListener = null;
+    let recordInterval = null;
 
+    // Запрос на доступ к микрофону
     async function getMicrophoneAccess() {
         try {
-            let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            return stream;
+            return await navigator.mediaDevices.getUserMedia({ audio: true });
         } catch (err) {
             console.log("Ошибка с getUserMedia:", err);
             return null;
         }
     }
 
+    // Запись аудио
     function recordAudio() {
         if (recordInterval) {
-            clearInterval(recordInterval); // Очищаем предыдущий интервал записи
+            clearInterval(recordInterval);
         }
 
         recordInterval = setInterval(async () => {
-            let stream = await getMicrophoneAccess();
-            if (!stream) {
-                console.log("Нет доступа к микрофону");
-                return;
-            }
+            const stream = await getMicrophoneAccess();
+            if (!stream) return;
 
-            let mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
-            let chunks = [];
-
+            const mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
+            const chunks = [];
             mediaRecorder.start();
+
             mediaRecorder.ondataavailable = (event) => chunks.push(event.data);
             mediaRecorder.onstop = () => {
-                let audioBlob = new Blob(chunks, { type: "audio/webm" });
+                const audioBlob = new Blob(chunks, { type: "audio/webm" });
                 if (wsSpeaker && wsSpeaker.readyState === WebSocket.OPEN) {
                     wsSpeaker.send(audioBlob);
                     console.log("Отправлены аудио данные (WebM файл)");
-                } else {
-                    console.log("WebSocket не открыт. Данные не отправлены.");
                 }
             };
 
@@ -209,9 +212,9 @@
         }, 5000);
     }
 
+    // Начало записи
     function startRecording() {
         if (wsSpeaker) {
-            console.log("Закрытие предыдущего WebSocket Speaker...");
             wsSpeaker.close();
         }
 
@@ -226,8 +229,8 @@
             console.error("Ошибка WebSocket Speaker:", error);
         };
 
-        wsSpeaker.onclose = (event) => {
-            console.warn("WebSocket Speaker закрыт. Код:", event.code, "Причина:", event.reason);
+        wsSpeaker.onclose = () => {
+            console.warn("WebSocket Speaker закрыт.");
             setTimeout(() => {
                 if (wsSpeaker && wsSpeaker.readyState === WebSocket.CLOSED) {
                     stopRecording();
@@ -236,6 +239,7 @@
         };
     }
 
+    // Остановка записи
     function stopRecording() {
         if (recordInterval) {
             clearInterval(recordInterval);
@@ -243,29 +247,16 @@
             console.log("Запись остановлена.");
         }
         if (wsSpeaker && wsSpeaker.readyState === WebSocket.OPEN) {
-            console.log("Закрываем WebSocket Speaker...");
             wsSpeaker.close();
             wsSpeaker = null;
         }
     }
 
-// **Функция переключения режима**
-    function updateUI() {
-        if (modeSelect.value === "listener") {
-            listenerContainer.style.display = "block";
-            startListening();
-        } else {
-            listenerContainer.style.display = "none";
-            stopListening();
-        }
-    }
-
+    // Прослушивание
     function startListening() {
         if (wsListener && wsListener.readyState === WebSocket.OPEN) {
-            console.log("Закрытие предыдущего WebSocket Listener...");
             wsListener.close();
         }
-
 
         wsListener = new WebSocket("ws://localhost:8000/ws/session1/listener");
 
@@ -273,7 +264,7 @@
             console.log("WebSocket Listener подключен");
         };
 
-        wsListener.onmessage = async (event) => {
+        wsListener.onmessage = (event) => {
             console.log("Получены данные от сервера:", event.data);
             animateTextDisplay(event.data);
         };
@@ -287,50 +278,49 @@
         };
     }
 
+    // Анимация текста
     function animateTextDisplay(text) {
         const textDisplay = document.getElementById("textDisplay");
-        console.log(textDisplay);
-        if (!textDisplay) {
-            console.error("❌ Ошибка: элемент #textDisplay не найден!");
-            return;
-        }
-        textDisplay.innerHTML = ""; // Очищаем текст перед анимацией
+        if (!textDisplay) return;
 
+        textDisplay.innerHTML = "";
         const words = text.split(" ");
         words.forEach((word, index) => {
-            let span = document.createElement("span");
-            span.textContent = word + " "; // Добавляем пробел после каждого слова
-            span.style.opacity = "0"; // Скрываем слово
+            const span = document.createElement("span");
+            span.textContent = word + " ";
+            span.style.opacity = "0";
             span.style.transition = "opacity 0.5s ease-in-out";
             textDisplay.appendChild(span);
-
-            // Показываем слово с задержкой
             setTimeout(() => {
                 span.style.opacity = "1";
-            }, index * 300); // Задержка между словами 300 мс
+            }, index * 300);
         });
     }
 
-// **Функция для остановки WebSocket Listener**
+    // Остановка прослушивания
     function stopListening() {
         if (wsListener) {
-            console.log("Закрываем WebSocket Listener...");
             wsListener.close();
             wsListener = null;
         }
     }
 
-// **Обновляем UI при смене режима**
-    modeSelect.addEventListener("change", () => {
-        updateUI();
-        if (modeSelect.value === "speaker") {
-            startRecording();
-        } else {
-            stopRecording();
+    async function getSummary() {
+        try {
+            const response = await fetch('http://localhost:8000/summary');
+            if (!response.ok) {
+                throw new Error(`Ошибка при получении данных: ${response.status}`);
+            }
+            const data = await response.json();
+            console.log(data);
+            const summaryDisplay = document.getElementById("summaryDisplay");
+            summaryDisplay.innerHTML = data.text; // хз что берется
+            return data;
+        } catch (error) {
+            console.error('Произошла ошибка при запросе данных:', error);
         }
-    });
+    }
+    setInterval(getSummary, 20000);
 
-// **Установить начальное состояние UI**
     updateUI();
-
 })();
