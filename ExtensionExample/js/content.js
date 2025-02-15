@@ -5,8 +5,8 @@
     const container = document.createElement("div");
     container.id = "mts-link-helper";
     container.style.position = "fixed";
-    container.style.bottom = "80px";
-    container.style.right = "20px";
+    container.style.bottom = "90px";
+    container.style.left = "20px";
     container.style.width = "320px";
     container.style.backgroundColor = "rgba(0, 0, 0, 0.9)";
     container.style.color = "white";
@@ -97,6 +97,24 @@
     });
 
     listenerContainer.appendChild(subtitleButton);
+
+
+    // Кнопка "Добавить субтитры"
+    const screenshotButton = document.createElement("button");
+    screenshotButton.innerText = "Сделать скриншот";
+    screenshotButton.style.width = "100%";
+    screenshotButton.style.padding = "8px";
+    screenshotButton.style.backgroundColor = "#4CAF50";
+    screenshotButton.style.color = "white";
+    screenshotButton.style.border = "none";
+    screenshotButton.style.borderRadius = "5px";
+    screenshotButton.style.cursor = "pointer";
+    screenshotButton.style.marginBottom = "10px";
+    screenshotButton.style.fontSize = "14px";
+    screenshotButton.setAttribute("tabindex", "0");
+    screenshotButton.setAttribute("aria-label", "Сделать скриншот");
+
+    listenerContainer.appendChild(screenshotButton);
 
     // Выпадающий список языков
     const languageSelect = document.createElement("select");
