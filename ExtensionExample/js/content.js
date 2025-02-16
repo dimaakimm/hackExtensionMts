@@ -122,6 +122,87 @@
     });
     listenerContainer.appendChild(languageSelect);
 
+    // Кнопка увеличения размера текста
+    const fontSizeButton = createElement("button", { innerText: "Увеличить размер текста", tabindex: "0", "aria-label": "Увеличить размер текста" }, {
+        width: "100%",
+        padding: "10px",
+        backgroundColor: "#FFC107", // Желтая кнопка
+        color: "white",
+        border: "none",
+        borderRadius: "5px",
+        cursor: "pointer",
+        marginBottom: "10px",
+        fontSize: "14px",
+        fontWeight: "bold",
+    });
+
+    fontSizeButton.addEventListener("click", () => {
+        let currentSize = parseInt(window.getComputedStyle(textDisplay).fontSize);
+        textDisplay.style.fontSize = (currentSize + 2) + "px";
+    });
+    listenerContainer.appendChild(fontSizeButton);
+
+    // Кнопка уменьшения размера текста
+    const decreaseFontSizeButton = createElement("button", { innerText: "Уменьшить размер текста", tabindex: "0", "aria-label": "Уменьшить размер текста" }, {
+        width: "100%",
+        padding: "10px",
+        backgroundColor: "#FFC107", // Желтая кнопка
+        color: "white",
+        border: "none",
+        borderRadius: "5px",
+        cursor: "pointer",
+        marginBottom: "10px",
+        fontSize: "14px",
+        fontWeight: "bold",
+    });
+
+    decreaseFontSizeButton.addEventListener("click", () => {
+        let currentSize = parseInt(window.getComputedStyle(textDisplay).fontSize);
+        textDisplay.style.fontSize = (currentSize - 2) + "px";
+    });
+    listenerContainer.appendChild(decreaseFontSizeButton);
+
+    // Кнопка ускорения анимации
+    const speedButton = createElement("button", { innerText: "Ускорить анимацию", tabindex: "0", "aria-label": "Ускорить анимацию" }, {
+        width: "100%",
+        padding: "10px",
+        backgroundColor: "#FFC107", // Желтая кнопка
+        color: "white",
+        border: "none",
+        borderRadius: "5px",
+        cursor: "pointer",
+        marginBottom: "10px",
+        fontSize: "14px",
+        fontWeight: "bold",
+    });
+
+    let animationSpeed = 300; // Начальная скорость анимации
+    speedButton.addEventListener("click", () => {
+        animationSpeed = animationSpeed > 100 ? animationSpeed - 50 : 300; // Уменьшаем скорость, но не меньше 100мс
+        console.log("Скорость анимации:", animationSpeed);
+    });
+    listenerContainer.appendChild(speedButton);
+
+    // Кнопка замедления анимации
+    const slowButton = createElement("button", { innerText: "Замедлить анимацию", tabindex: "0", "aria-label": "Замедлить анимацию" }, {
+        width: "100%",
+        padding: "10px",
+        backgroundColor: "#FFC107", // Желтая кнопка
+        color: "white",
+        border: "none",
+        borderRadius: "5px",
+        cursor: "pointer",
+        marginBottom: "10px",
+        fontSize: "14px",
+        fontWeight: "bold",
+    });
+
+    slowButton.addEventListener("click", () => {
+        animationSpeed += 50; // Увеличиваем скорость анимации
+        console.log("Скорость анимации:", animationSpeed);
+    });
+    listenerContainer.appendChild(slowButton);
+
     // Добавление контейнера в body
     document.body.appendChild(container);
     container.appendChild(listenerContainer);
@@ -146,7 +227,6 @@
 
     modeSelectContainer.append(modeLabel, modeSelect);
     container.appendChild(modeSelectContainer);
-
 
     function updateUI() {
         listenerContainer.style.display = modeSelect.value === "listener" ? "block" : "none";
@@ -289,11 +369,11 @@
             const span = document.createElement("span");
             span.textContent = word + " ";
             span.style.opacity = "0";
-            span.style.transition = "opacity 0.5s ease-in-out";
+            span.style.transition = `opacity ${animationSpeed}ms ease-in-out`;
             textDisplay.appendChild(span);
             setTimeout(() => {
                 span.style.opacity = "1";
-            }, index * 300);
+            }, index * animationSpeed);
         });
     }
 
