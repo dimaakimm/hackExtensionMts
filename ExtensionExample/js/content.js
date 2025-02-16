@@ -32,14 +32,6 @@
     // Контейнер для элементов Listener (скрывается при выборе Speaker)
     const listenerContainer = createElement("div", {}, { display: "none", width: "100%" });
 
-    // Заголовок
-    const title = createElement("div", { innerText: "MTS-Link Helper", "aria-label": "MTS-Link Helper" }, {
-        fontSize: "18px",
-        marginBottom: "10px",
-        fontWeight: "bold",
-        color: "#4CAF50", // Зеленый цвет для заголовка
-    });
-    listenerContainer.appendChild(title);
 
     // Текстовое поле для отображения данных
     const textDisplay = createElement("div", { id: "textDisplay", innerText: "Ожидание данных...", tabindex: "0", "aria-label": "Ожидание данных..." }, {
@@ -125,7 +117,7 @@
 
 
     // Кнопка увеличения размера текста
-    const fontSizeButton = createElement("button", { innerText: "Увеличить размер текста", tabindex: "0", "aria-label": "Увеличить размер текста" }, {
+    const fontSizeButton = createElement("button", { innerText: "+", tabindex: "0", "aria-label": "Увеличить размер текста" }, {
         width: "100%",
         padding: "10px",
         backgroundColor: "#FFC107", // Желтая кнопка
@@ -141,10 +133,11 @@
     fontSizeButton.addEventListener("click", () => {
         let currentSize = parseInt(window.getComputedStyle(textDisplay).fontSize);
         textDisplay.style.fontSize = (currentSize + 2) + "px";
+        summaryDisplay.style.fontSize = (currentSize + 2) + "px";
     });
 
     // Кнопка уменьшения размера текста
-    const decreaseFontSizeButton = createElement("button", { innerText: "Уменьшить размер текста", tabindex: "0", "aria-label": "Уменьшить размер текста" }, {
+    const decreaseFontSizeButton = createElement("button", { innerText: "-", tabindex: "0", "aria-label": "Уменьшить размер текста" }, {
         width: "100%",
         padding: "10px",
         backgroundColor: "#FFC107", // Желтая кнопка
@@ -160,23 +153,37 @@
     decreaseFontSizeButton.addEventListener("click", () => {
         let currentSize = parseInt(window.getComputedStyle(textDisplay).fontSize);
         textDisplay.style.fontSize = (currentSize - 2) + "px";
+        summaryDisplay.style.fontSize = (currentSize - 2) + "px";
     });
 
 
     const buttonContainer1 = createElement("div", {}, {
         width: "100%",
         display: "flex",
-        gap: "10px"
+        gap: "10px",
     });
     buttonContainer1.appendChild(decreaseFontSizeButton)
     buttonContainer1.appendChild(fontSizeButton)
-    listenerContainer.appendChild(buttonContainer1);
+
+    const titleSection1 = createElement("div", { innerText: "Шрифт"}, {
+        fontSize: "14px",
+        fontWeight: "bold",
+    });
+
+    const sectionButtonContainer1 = createElement("div", {}, {
+        width: "100%",
+        display: "flex",
+        gap: "10px",
+        flexDirection: "column"
+    });
+    sectionButtonContainer1.appendChild(titleSection1);
+    sectionButtonContainer1.appendChild(buttonContainer1);
 
 
 
 
     // Кнопка ускорения анимации
-    const speedButton = createElement("button", { innerText: "Ускорить анимацию", tabindex: "0", "aria-label": "Ускорить анимацию" }, {
+    const speedButton = createElement("button", { innerText: "+", tabindex: "0", "aria-label": "Ускорить анимацию" }, {
         width: "100%",
         padding: "10px",
         backgroundColor: "#FFC107", // Желтая кнопка
@@ -196,7 +203,7 @@
     });
 
     // Кнопка замедления анимации
-    const slowButton = createElement("button", { innerText: "Замедлить анимацию", tabindex: "0", "aria-label": "Замедлить анимацию" }, {
+    const slowButton = createElement("button", { innerText: "-", tabindex: "0", "aria-label": "Замедлить анимацию" }, {
         width: "100%",
         padding: "10px",
         backgroundColor: "#FFC107", // Желтая кнопка
@@ -214,6 +221,11 @@
         console.log("Скорость анимации:", animationSpeed);
     });
 
+    const titleSection2 = createElement("div", { innerText: "Скорость"}, {
+        fontSize: "14px",
+        fontWeight: "bold",
+    });
+
     const buttonContainer2 = createElement("div", {}, {
         width: "100%",
         display: "flex",
@@ -221,7 +233,26 @@
     });
     buttonContainer2.appendChild(slowButton)
     buttonContainer2.appendChild(speedButton)
-    listenerContainer.appendChild(buttonContainer2);
+
+    const sectionButtonContainer2 = createElement("div", {}, {
+        width: "100%",
+        display: "flex",
+        gap: "10px",
+        flexDirection: "column"
+    });
+    sectionButtonContainer2.appendChild(titleSection2);
+    sectionButtonContainer2.appendChild(buttonContainer2);
+
+
+
+    const buttonContainer3 = createElement("div", {}, {
+        width: "100%",
+        display: "flex",
+        gap: "10px"
+    });
+    buttonContainer3.appendChild(sectionButtonContainer1)
+    buttonContainer3.appendChild(sectionButtonContainer2)
+    listenerContainer.appendChild(buttonContainer3);
 
     // Добавление контейнера в body
     document.body.appendChild(container);
