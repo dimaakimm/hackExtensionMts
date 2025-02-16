@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "MTS-Link Helper",
+  "version": "1.0",
+  "default_locale": "en",
+  "description": "Добавляет текст с бэкенда в конференцию MTS-Link",
+  "permissions": ["scripting", "storage"],
+  "host_permissions": ["https://*mts-link.ru/*"],
+  "background": {
+    "service_worker": "./js/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.mts-link.ru/*"],
+      "js": ["./js/content.js"]
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "./img/icons/extension/16x16.png",
+      "48": "./img/icons/extension/48x48.png",
+      "128": "./img/icons/extension/128x128.png"
+    }
+  }
+}
