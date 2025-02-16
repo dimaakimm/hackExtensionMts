@@ -1,7 +1,6 @@
 (function () {
     console.log("MTS-Link Helper запущен!");
 
-    // Функция для создания элемента с заданными стилями
     function createElement(tag, attributes = {}, styles = {}) {
         const element = document.createElement(tag);
         Object.assign(element, attributes);
@@ -9,7 +8,6 @@
         return element;
     }
 
-    // Основной контейнер
     const container = createElement("div", { id: "mts-link-helper", tabindex: "0" }, {
         position: "fixed",
         bottom: "90px",
@@ -29,37 +27,33 @@
         border: "2px solid #4CAF50", // Зеленая граница для акцента
     });
 
-    // Контейнер для элементов Listener (скрывается при выборе Speaker)
     const listenerContainer = createElement("div", {}, { display: "none", width: "100%" });
 
-
-    // Текстовое поле для отображения данных
     const textDisplay = createElement("div", { id: "textDisplay", innerText: "Ожидание данных...", tabindex: "0", "aria-label": "Ожидание данных..." }, {
         padding: "10px",
-        backgroundColor: "rgba(255, 255, 255, 0.1)", // Прозрачный фон
+        backgroundColor: "rgba(255, 255, 255, 0.1)",
         borderRadius: "8px",
         marginBottom: "10px",
         fontSize: "16px",
         color: "white",
-        border: "1px solid #4CAF50", // Зеленая граница
+        border: "1px solid #4CAF50",
         minHeight: "38px"
     });
     listenerContainer.appendChild(textDisplay);
 
     const summaryDisplay = createElement("div", { id: "summaryDisplay", innerText: "Ожидание данных...", tabindex: "0", "aria-label": "Ожидание данных..." }, {
         padding: "10px",
-        backgroundColor: "rgba(255, 255, 255, 0.1)", // Прозрачный фон
+        backgroundColor: "rgba(255, 255, 255, 0.1)",
         borderRadius: "8px",
         marginBottom: "15px",
         fontSize: "16px",
         color: "white",
-        border: "1px solid #4CAF50", // Зеленая граница
+        border: "1px solid #4CAF50",
         minHeight: "38px"
     });
     listenerContainer.appendChild(summaryDisplay);
 
-    // Кнопка "Озвучивание текста"
-    const subtitleButton = createElement("button", { innerText: "Озвучивание текста", tabindex: "0", "aria-label": "Озвучивание текста" }, {
+    const subtitleButton = createElement("button", { innerText: "Озвучивание текста", tabindex: "0", "aria-label": "Озвучивание текста", id: "startSound" }, {
         width: "100%",
         padding: "10px",
         backgroundColor: "#4CAF50",
@@ -70,21 +64,20 @@
         marginBottom: "10px",
         fontSize: "14px",
         fontWeight: "bold",
-        textTransform: "uppercase", // Увеличение контраста текста
+        textTransform: "uppercase",
     });
 
-    let isGray = false; // Флаг состояния кнопки
+    let isGray = false;
     subtitleButton.addEventListener("click", () => {
         isGray = !isGray;
         subtitleButton.style.backgroundColor = isGray ? "gray" : "#4CAF50";
     });
     listenerContainer.appendChild(subtitleButton);
 
-    // Кнопка "Сделать скриншот"
     const screenshotButton = createElement("button", { innerText: "Сделать скриншот", tabindex: "0", "aria-label": "Сделать скриншот" }, {
         width: "100%",
         padding: "10px",
-        backgroundColor: "#FF5722", // Оранжевая кнопка
+        backgroundColor: "#FF5722",
         color: "white",
         border: "none",
         borderRadius: "5px",
@@ -95,7 +88,6 @@
     });
     listenerContainer.appendChild(screenshotButton);
 
-    // Выпадающий список языков
     const languageSelect = createElement("select", { tabindex: "0", "aria-label": "Выберите язык субтитров" }, {
         width: "100%",
         padding: "10px",
@@ -114,13 +106,10 @@
     });
     listenerContainer.appendChild(languageSelect);
 
-
-
-    // Кнопка увеличения размера текста
     const fontSizeButton = createElement("button", { innerText: "+", tabindex: "0", "aria-label": "Увеличить размер текста" }, {
         width: "100%",
         padding: "10px",
-        backgroundColor: "#FFC107", // Желтая кнопка
+        backgroundColor: "#FFC107",
         color: "white",
         border: "none",
         borderRadius: "5px",
@@ -136,11 +125,10 @@
         summaryDisplay.style.fontSize = (currentSize + 2) + "px";
     });
 
-    // Кнопка уменьшения размера текста
     const decreaseFontSizeButton = createElement("button", { innerText: "-", tabindex: "0", "aria-label": "Уменьшить размер текста" }, {
         width: "100%",
         padding: "10px",
-        backgroundColor: "#FFC107", // Желтая кнопка
+        backgroundColor: "#FFC107",
         color: "white",
         border: "none",
         borderRadius: "5px",
@@ -155,7 +143,6 @@
         textDisplay.style.fontSize = (currentSize - 2) + "px";
         summaryDisplay.style.fontSize = (currentSize - 2) + "px";
     });
-
 
     const buttonContainer1 = createElement("div", {}, {
         width: "100%",
@@ -179,14 +166,10 @@
     sectionButtonContainer1.appendChild(titleSection1);
     sectionButtonContainer1.appendChild(buttonContainer1);
 
-
-
-
-    // Кнопка ускорения анимации
     const speedButton = createElement("button", { innerText: "+", tabindex: "0", "aria-label": "Ускорить анимацию" }, {
         width: "100%",
         padding: "10px",
-        backgroundColor: "#FFC107", // Желтая кнопка
+        backgroundColor: "#FFC107",
         color: "white",
         border: "none",
         borderRadius: "5px",
@@ -196,17 +179,16 @@
         fontWeight: "bold",
     });
 
-    let animationSpeed = 300; // Начальная скорость анимации
+    let animationSpeed = 300;
     speedButton.addEventListener("click", () => {
-        animationSpeed = animationSpeed > 100 ? animationSpeed - 50 : 300; // Уменьшаем скорость, но не меньше 100мс
+        animationSpeed = animationSpeed > 100 ? animationSpeed - 50 : 300;
         console.log("Скорость анимации:", animationSpeed);
     });
 
-    // Кнопка замедления анимации
     const slowButton = createElement("button", { innerText: "-", tabindex: "0", "aria-label": "Замедлить анимацию" }, {
         width: "100%",
         padding: "10px",
-        backgroundColor: "#FFC107", // Желтая кнопка
+        backgroundColor: "#FFC107",
         color: "white",
         border: "none",
         borderRadius: "5px",
@@ -217,7 +199,7 @@
     });
 
     slowButton.addEventListener("click", () => {
-        animationSpeed += 50; // Увеличиваем скорость анимации
+        animationSpeed += 50;
         console.log("Скорость анимации:", animationSpeed);
     });
 
@@ -243,8 +225,6 @@
     sectionButtonContainer2.appendChild(titleSection2);
     sectionButtonContainer2.appendChild(buttonContainer2);
 
-
-
     const buttonContainer3 = createElement("div", {}, {
         width: "100%",
         display: "flex",
@@ -254,16 +234,9 @@
     buttonContainer3.appendChild(sectionButtonContainer2)
     listenerContainer.appendChild(buttonContainer3);
 
-    // Добавление контейнера в body
     document.body.appendChild(container);
     container.appendChild(listenerContainer);
 
-    // Функция переключения видимости
-    function updateUI() {
-        listenerContainer.style.display = modeSelect.value === "listener" ? "block" : "none";
-    }
-
-    // Выпадающий список для режима
     const modeSelectContainer = createElement("div", {}, { width: "100%" });
     const modeLabel = createElement("label", { innerText: "Выберите режим:" }, { display: "block", marginBottom: "5px" });
     const modeSelect = createElement("select", { tabindex: "0" }, {
@@ -299,11 +272,49 @@
         }
     });
 
+    document.getElementById("startSound").addEventListener("click", () => {
+        console.log("startSound")
+        if(wsListener){
+            wsListener.close()
+        }
+        wsListener = new WebSocket("ws://localhost:8000/ws/2/listener");
+
+        wsListener.onopen = () => {
+            console.log("WebSocket Listener подключен с аудио");
+        };
+
+        wsListener.onmessage = (event) => {
+            console.log("message")
+            const audioData = event.data;
+
+            const audioBlob = new Blob([audioData], { type: 'audio/wav' });
+
+            const audioUrl = URL.createObjectURL(audioBlob);
+
+            const audio = new Audio(audioUrl);
+
+            audio.play()
+                .then(() => {
+                    console.log('Audio is playing');
+                })
+                .catch((error) => {
+                    console.error('Error playing audio:', error);
+                });
+        };
+
+        wsListener.onerror = (error) => {
+            console.error("Ошибка WebSocket Listener:", error);
+        };
+
+        wsListener.onclose = () => {
+            console.warn("WebSocket Listener отключен");
+        };
+    })
+
     let wsSpeaker = null;
     let wsListener = null;
     let recordInterval = null;
 
-    // Запрос на доступ к микрофону
     async function getMicrophoneAccess() {
         try {
             return await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -313,7 +324,6 @@
         }
     }
 
-    // Запись аудио
     function recordAudio() {
         if (recordInterval) {
             clearInterval(recordInterval);
@@ -343,7 +353,6 @@
         }, 5000);
     }
 
-    // Начало записи
     function startRecording() {
         if (wsSpeaker) {
             wsSpeaker.close();
@@ -370,7 +379,6 @@
         };
     }
 
-    // Остановка записи
     function stopRecording() {
         if (recordInterval) {
             clearInterval(recordInterval);
@@ -383,33 +391,26 @@
         }
     }
 
-    // Прослушивание
     function startListening() {
         if (wsListener && wsListener.readyState === WebSocket.OPEN) {
             wsListener.close();
         }
-
         wsListener = new WebSocket("ws://localhost:8000/ws/session1/listener");
-
         wsListener.onopen = () => {
             console.log("WebSocket Listener подключен");
         };
-
         wsListener.onmessage = (event) => {
             console.log("Получены данные от сервера:", event.data);
             animateTextDisplay(event.data);
         };
-
         wsListener.onerror = (error) => {
             console.error("Ошибка WebSocket Listener:", error);
         };
-
         wsListener.onclose = () => {
             console.warn("WebSocket Listener отключен");
         };
     }
 
-    // Анимация текста
     function animateTextDisplay(text) {
         const textDisplay = document.getElementById("textDisplay");
         if (!textDisplay) return;
@@ -428,7 +429,6 @@
         });
     }
 
-    // Остановка прослушивания
     function stopListening() {
         if (wsListener) {
             wsListener.close();
@@ -445,7 +445,7 @@
             const data = await response.json();
             console.log(data);
             const summaryDisplay = document.getElementById("summaryDisplay");
-            summaryDisplay.innerHTML = data.text; // хз что берется
+            summaryDisplay.innerHTML = data.text;
             return data;
         } catch (error) {
             console.error('Произошла ошибка при запросе данных:', error);
